@@ -1,73 +1,40 @@
-# Welcome to your Lovable project
+# AI Resume Analyzer
 
-## Project info
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="python" />
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="nextjs" />
+  <img src="https://img.shields.io/badge/NLP-FF6F00?style=for-the-badge&logo=nlp&logoColor=white" alt="nlp" />
+</p>
 
-**URL**: https://lovable.dev/projects/3a07fa85-fd2a-4d4b-9d98-46da1d53ab6c
+## Overview
+AI Resume Analyzer is a full-stack web application that helps job seekers improve their resumes. By parsing resume documents and leveraging Natural Language Processing (NLP) models alongside powerful LLM APIs, the system delivers structured, actionable AI feedback to users.
 
-## How can I edit this code?
+## Key Features
+- **Smart Parsing:** Accurately extracts text and sections from resume files.
+- **Structured AI Feedback:** Analyzes the content and provides targeted suggestions for improvement using NLP and LLMs.
+- **Modern Full-Stack Deployment:** The frontend is built and deployed using Next.js (via Lovable.dev) for a fast, responsive user experience.
 
-There are several ways of editing your application.
+## Tech Stack
+- **Frontend/Deployment:** Next.js (Lovable.dev)
+- **Backend/AI:** Python, NLP Models, LLM API Integration
 
-**Use Lovable**
+## Getting Started
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/3a07fa85-fd2a-4d4b-9d98-46da1d53ab6c) and start prompting.
+### Prerequisites
+- Node.js & npm
+- Python 3.8+
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/3a07fa85-fd2a-4d4b-9d98-46da1d53ab6c) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Sainitesh10/AI_Resume_Analyzer.git
+   ```
+2. Navigate to the frontend directory and install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up the backend environment and install Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Run the development servers as instructed in the specific backend/frontend directories.
