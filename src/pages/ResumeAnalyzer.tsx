@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Upload, FileText, User, Briefcase, IndianRupee, TrendingUp, Lightbulb, Target, CheckCircle, X } from 'lucide-react';
+import { Upload, FileText, User, Briefcase, IndianRupee, TrendingUp, Lightbulb, Target, CheckCircle, X, FileEdit } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import PersonalInfoAnalysis from '@/components/analyzer/PersonalInfoAnalysis';
 import JobRoleAnalysis from '@/components/analyzer/JobRoleAnalysis';
@@ -13,11 +13,14 @@ import SalaryEstimation from '@/components/analyzer/SalaryEstimation';
 import PreferredRoleAnalysis from '@/components/analyzer/PreferredRoleAnalysis';
 import ImprovementSuggestions from '@/components/analyzer/ImprovementSuggestions';
 import SkillsAnalysis from '@/components/analyzer/SkillsAnalysis';
+import CoverLetterGenerator from '@/components/analyzer/CoverLetterGenerator';
 import { analyzeResumeText } from '@/utils/resumeAnalyzer';
+import { extractTextFromFile } from '@/utils/fileParser';
 
 const ResumeAnalyzer = () => {
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [analysis, setAnalysis] = useState<any>(null);
+  const [rawText, setRawText] = useState<string>('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -106,19 +109,30 @@ const ResumeAnalyzer = () => {
 
     setIsAnalyzing(true);
     try {
-      // Mock resume text based on file name for now
-      const mockResumeText = `Resume content from ${fileToAnalyze.name}`;
-      const analysisResult = await analyzeResumeText(mockResumeText);
+      toast({
+        title: "Extracting Text",
+        description: "Reading document contents securely in your browser...",
+      });
+      
+      const extractedText = await extractTextFromFile(fileToAnalyze);
+      setRawText(extractedText);
+      
+      toast({
+        title: "Analyzing Resume",
+        description: "Gemini AI is processing your resume data...",
+      });
+      
+      const analysisResult = await analyzeResumeText(extractedText);
       setAnalysis(analysisResult);
       toast({
         title: "Analysis completed",
         description: "Your resume has been analyzed successfully",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Analysis error:', error);
       toast({
         title: "Analysis failed",
-        description: "There was an error analyzing your resume",
+        description: error.message || "There was an error analyzing your resume",
         variant: "destructive",
       });
     } finally {
@@ -140,19 +154,24 @@ const ResumeAnalyzer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen relative p-4 text-white">
+      <div className="aurora-bg">
+        <div className="aurora-orb aurora-orb-1"></div>
+        <div className="aurora-orb aurora-orb-2"></div>
+        <div className="aurora-orb aurora-orb-3"></div>
+      </div>
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">AI Resume Analyzer</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-indigo-400">AI Resume Analyzer</h1>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Get comprehensive insights about your resume with AI-powered analysis. 
             Discover your ideal role, salary expectations, and improvement suggestions.
           </p>
         </div>
 
         {!analysis && (
-          <Card className="mb-8 overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+          <Card className="mb-8 overflow-hidden glass-panel border-0">
+            <CardHeader className="bg-white/5 border-b border-white/10 text-white">
               <CardTitle className="flex items-center gap-2">
                 <Upload className="h-5 w-5" />
                 Upload Your Resume
@@ -166,10 +185,10 @@ const ResumeAnalyzer = () => {
               <div
                 className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 cursor-pointer ${
                   isDragOver 
-                    ? 'border-blue-500 bg-blue-50 scale-105' 
+                    ? 'border-teal-400 bg-teal-400/10 scale-105' 
                     : resumeFile 
-                    ? 'border-green-500 bg-green-50' 
-                    : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50'
+                    ? 'border-green-400 bg-green-400/10' 
+                    : 'border-white/20 hover:border-teal-400 hover:bg-teal-400/5'
                 }`}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
@@ -232,13 +251,13 @@ const ResumeAnalyzer = () => {
                     <Upload className={`h-16 w-16 mx-auto mb-4 transition-colors ${
                       isDragOver ? 'text-blue-500' : 'text-gray-400'
                     }`} />
-                    <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                    <h3 className="text-xl font-semibold text-gray-200 mb-2">
                       {isDragOver ? 'Drop your file here' : 'Drag & drop your resume'}
                     </h3>
-                    <p className="text-gray-500 mb-4">or click to browse files</p>
+                    <p className="text-gray-400 mb-4">or click to browse files</p>
                     <Button 
                       variant="outline" 
-                      className="hover:scale-105 transition-transform"
+                      className="hover:scale-105 transition-transform bg-transparent border-white/20 hover:bg-white/10 text-gray-900 dark:text-white"
                       onClick={handleChooseFileClick}
                     >
                       Choose File
@@ -265,11 +284,11 @@ const ResumeAnalyzer = () => {
         {analysis && (
           <div className="animate-fade-in">
             <div className="mb-6 flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">Resume Analysis Results</h2>
+              <h2 className="text-2xl font-bold text-white">Resume Analysis Results</h2>
               <Button 
                 onClick={clearFile}
                 variant="outline"
-                className="hover:bg-gray-50"
+                className="bg-transparent border-white/20 hover:bg-white/10 text-gray-900 dark:text-white"
               >
                 <Upload className="h-4 w-4 mr-2" />
                 Upload New Resume
@@ -277,7 +296,7 @@ const ResumeAnalyzer = () => {
             </div>
 
             <Tabs defaultValue="personal" className="w-full">
-              <TabsList className="grid w-full grid-cols-6 mb-8">
+              <TabsList className="grid w-full grid-cols-7 mb-8">
                 <TabsTrigger value="personal" className="flex items-center gap-2">
                   <User className="h-4 w-4" />
                   Personal Info
@@ -301,6 +320,10 @@ const ResumeAnalyzer = () => {
                 <TabsTrigger value="skills" className="flex items-center gap-2">
                   <Lightbulb className="h-4 w-4" />
                   Skills
+                </TabsTrigger>
+                <TabsTrigger value="coverLetter" className="flex items-center gap-2 text-indigo-600 font-semibold">
+                  <FileEdit className="h-4 w-4" />
+                  Cover Letter
                 </TabsTrigger>
               </TabsList>
 
@@ -326,6 +349,10 @@ const ResumeAnalyzer = () => {
 
               <TabsContent value="skills">
                 <SkillsAnalysis data={analysis.skills} />
+              </TabsContent>
+
+              <TabsContent value="coverLetter">
+                <CoverLetterGenerator resumeText={rawText} />
               </TabsContent>
             </Tabs>
           </div>
